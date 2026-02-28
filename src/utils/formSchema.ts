@@ -4,6 +4,7 @@ const nonNegative = z.coerce.number().min(0, 'Must be a non-negative value');
 
 export const taxFormSchema = z.object({
   personal: z.object({
+    name: z.string().trim().min(1, 'Name is required'),
     age: z.coerce.number().min(18).max(120),
     residentialStatus: z.enum(['resident', 'nri']),
     financialYear: z.literal('FY2025_26')

@@ -12,9 +12,10 @@ export const TaxWizard = () => {
   const currentStep = useAppSelector(selectCurrentStep);
   const isLoading = useAppSelector(selectLoading);
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<TaxFormSchema>({
+  const { register, getValues, handleSubmit, trigger, watch, formState: { errors } } = useForm<TaxFormSchema>({
     resolver: zodResolver(taxFormSchema),
-    defaultValues: input
+    defaultValues: input,
+    shouldUnregister: false
   });
 
   const onSubmit = (data: TaxFormSchema) => {
@@ -22,12 +23,27 @@ export const TaxWizard = () => {
     dispatch(calculate());
   };
 
-  const nextStep = () => {
-    dispatch(updateInput(watch()));
+  const stepFields: Record<number, Array<keyof TaxFormSchema | string>> = {
+    1: ['personal.name', 'personal.age', 'personal.residentialStatus', 'personal.financialYear'],
+    2: ['salary.grossSalary', 'salary.hraExempt', 'salary.professionalTax'],
+    3: ['other.housePropertyIncome', 'other.stcg', 'other.ltcg', 'other.businessIncome', 'other.otherIncome'],
+    4: ['deductions.section80C', 'deductions.section80CCD1B', 'deductions.section80D', 'deductions.section80E', 'deductions.section80G', 'deductions.section80TTA', 'deductions.section80TTB', 'deductions.housingLoan24b', 'deductions.customDeduction']
+  };
+
+  const nextStep = async () => {
+    const fields = stepFields[currentStep];
+    if (fields) {
+      const isValid = await trigger(fields as Array<keyof TaxFormSchema>);
+      if (!isValid) return;
+    }
+    dispatch(updateInput(getValues()));
     dispatch(setStep(Math.min(currentStep + 1, 5)));
   };
 
-  const previousStep = () => dispatch(setStep(Math.max(currentStep - 1, 1)));
+  const previousStep = () => {
+    dispatch(updateInput(getValues()));
+    dispatch(setStep(Math.max(currentStep - 1, 1)));
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="rounded-xl bg-white p-4 shadow">

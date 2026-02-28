@@ -1,6 +1,7 @@
 export type Regime = 'OLD' | 'NEW';
 
 export interface PersonalDetails {
+  name: string;
   age: number;
   residentialStatus: 'resident' | 'nri';
   financialYear: 'FY2025_26';

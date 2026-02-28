@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import taxReducer from '../features/tax/taxSlice';
+import form16Reducer from '../features/form16/form16Slice';
 
 export const store = configureStore({
   reducer: {
-    tax: taxReducer
+    tax: taxReducer,
+    form16: form16Reducer
   }
 });
 
