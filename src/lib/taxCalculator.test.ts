@@ -3,7 +3,7 @@ import { calculateTaxComparison } from './taxCalculator';
 import type { TaxInput } from '../types/tax';
 
 const baseInput: TaxInput = {
-  personal: { age: 35, residentialStatus: 'resident', financialYear: 'FY2025_26' },
+  personal: { name: 'Test User', age: 35, residentialStatus: 'resident', financialYear: 'FY2025_26' },
   salary: { grossSalary: 1200000, hraExempt: 100000, professionalTax: 2500 },
   other: { housePropertyIncome: -150000, stcg: 0, ltcg: 0, businessIncome: 0, otherIncome: 20000 },
   deductions: { section80C: 150000, section80CCD1B: 50000, section80D: 25000, section80E: 0, section80G: 0, section80TTA: 10000, section80TTB: 0, housingLoan24b: 200000, customDeduction: 0 }
